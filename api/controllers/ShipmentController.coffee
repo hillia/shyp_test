@@ -15,7 +15,7 @@ ShipmentController = {
     )
 
   create: (request, response) ->
-    // TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
+    # TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
     Shipment.create(request.body).done((error, shipment) ->
       return response.send(error, 500) if error
 
@@ -24,7 +24,7 @@ ShipmentController = {
 
 
   update: (request, response) ->
-    // TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
+    # TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
     Shipment.update({ id: request.param('id') }, request.body, (error, shipments) ->
       return response.send(error, 500) if error
       return response.send("No shipment with that id exists.", 404) if shipments.length == 0
