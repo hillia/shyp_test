@@ -29,18 +29,9 @@ Shipment = {
     destination_latitude: 'FLOAT',
     destination_longitude: 'FLOAT',
 
-    package_width: {
-      type: 'FLOAT',
-      required: true
-    }
-    package_height: {
-      type: 'FLOAT',
-      required: true
-    },
-    package_depth: {
-      type: 'FLOAT',
-      required: true
-    }
+    package_width: "FLOAT"
+    package_height: "FLOAT",
+    package_depth: "FLOAT"
   },
 
   STATUSES: {
@@ -50,19 +41,19 @@ Shipment = {
   },
 
   beforeValidation: (values, next) ->
-    if values.destination_address != null
+    return next() if !values.destination_address
 
-      onSuccess = (geo_data) ->
-        values.destination_latitude = geo_data.results[0].geometry.location.lat
-        values.destination_longitude = geo_data.results[0].geometry.location.lng
-        next()
+    onSuccess = (geo_data) ->
+      values.destination_latitude = geo_data.results[0].geometry.location.lat
+      values.destination_longitude = geo_data.results[0].geometry.location.lng
+      next()
 
-      onError = (error) ->
-        values.destination_latitude = null
-        values.destination_longitude = null
-        next()
+    onError = (error) ->
+      values.destination_latitude = null
+      values.destination_longitude = null
+      next()
 
-      GeolocationService.fetch_coordinates_for_address(values.destination_address, onSuccess, onError);
+    GeolocationService.fetch_coordinates_for_address(values.destination_address, onSuccess, onError);
 
 }
 
