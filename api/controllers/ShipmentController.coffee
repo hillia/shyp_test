@@ -2,17 +2,7 @@
   ShipmentController
 
   @module      :: Controller
-  @description	:: A set of functions called `actions`.
-
-                  Actions contain code telling Sails how to respond to a certain type of request.
-                  (i.e. do stuff, then send some JSON, show an HTML page, or redirect to another URL)
-
-                  You can configure the blueprint URLs which trigger these actions (`config/controllers.js`)
-                  and/or override them with custom routes (`config/routes.js`)
-
-                  NOTE: The code you write here supports both HTTP and Socket.io automatically.
-
-  @docs        :: http://sailsjs.org/#!documentation/controllers
+  @description	:: REST API for Shipment models
 ###
 
 ShipmentController = {
@@ -25,6 +15,7 @@ ShipmentController = {
     )
 
   create: (request, response) ->
+    // TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
     Shipment.create(request.body).done((error, shipment) ->
       return response.send(error, 500) if error
 
@@ -33,6 +24,7 @@ ShipmentController = {
 
 
   update: (request, response) ->
+    // TODO: Shouldn't be accepting every param. Investigate attribute whitelisting for Sails
     Shipment.update({ id: request.param('id') }, request.body, (error, shipments) ->
       return response.send(error, 500) if error
       return response.send("No shipment with that id exists.", 404) if shipments.length == 0
