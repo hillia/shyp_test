@@ -409,7 +409,17 @@ module.exports = function (grunt) {
         // When assets are changed:
         tasks: ['compileAssets', 'linkAssets']
       }
-    }
+    },
+
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+          require: ['coffee-script/register', 'should']
+        },
+        src: ['test/**/*.coffee']
+      }
+    },
   });
 
   // When Sails is lifted:
@@ -465,6 +475,10 @@ module.exports = function (grunt) {
     'sails-linker:prodStylesJADE',
     'sails-linker:devTplJADE'
   ]);
+
+  // Load test tasks
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.registerTask('test', ['mochaTest']);
 
   // Adding migration tasks
   //grunt.loadNpmTasks('sails-migrations');

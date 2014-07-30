@@ -1,5 +1,5 @@
 https = require('https')
-querystring = require("querystring");
+querystring = require("querystring")
 
 exports.fetch_coordinates_for_address = (address, onSuccess, onError) ->
 
@@ -9,7 +9,7 @@ exports.fetch_coordinates_for_address = (address, onSuccess, onError) ->
     }
 
     _onError = (error) ->
-        console.log("FAILED TO GET GEOLOCATION: ", error)
+        console.log("Failed to retrieve geolocation data: ", error);
         onError(error) if onError
 
     _onSuccess = (response) ->
@@ -17,9 +17,13 @@ exports.fetch_coordinates_for_address = (address, onSuccess, onError) ->
         response.on('data', (chunk) ->
             body += chunk
         )
-        response.on('end', () ->
-            geo_data = JSON.parse(body)
-            onSuccess(geo_data)
+        response.on('end', ->
+            try
+                geo_data = JSON.parse(body)
+                onSuccess(geo_data)
+            catch error
+                console.log("Geolocation data malformed: ", body);
+                onError(error)
         )
 
     https.get(options, _onSuccess).on('error', _onError)
